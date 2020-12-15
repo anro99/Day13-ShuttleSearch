@@ -27,7 +27,18 @@ namespace Day13_ShuttleSearch
         {
             var door = new Door13.Door13(m_edtInput, m_edtResult);
             door.Question2();
+        }
 
+        private void m_btnDoor15a_Click(object sender, EventArgs e)
+        {
+            var door = new Door15.Door15(m_edtInput, m_edtResult);
+            door.Question(2020);
+        }
+
+        private void m_btnDoor15b_Click(object sender, EventArgs e)
+        {
+            var door = new Door15.Door15(m_edtInput, m_edtResult);
+            door.Question(30000000);
         }
     }
 }

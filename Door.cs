@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Day13_ShuttleSearch.Door13
+namespace Day13_ShuttleSearch
 {
     internal class Door
     {

@@ -32,6 +32,8 @@
             this.m_btnDoor13a = new System.Windows.Forms.Button();
             this.m_btnDoor13b = new System.Windows.Forms.Button();
             this.m_edtResult = new System.Windows.Forms.TextBox();
+            this.m_btnDoor15a = new System.Windows.Forms.Button();
+            this.m_btnDoor15b = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // m_edtInput
@@ -58,7 +60,7 @@
             // 
             // m_btnDoor13b
             // 
-            this.m_btnDoor13b.Location = new System.Drawing.Point(112, 115);
+            this.m_btnDoor13b.Location = new System.Drawing.Point(94, 115);
             this.m_btnDoor13b.Name = "m_btnDoor13b";
             this.m_btnDoor13b.Size = new System.Drawing.Size(75, 23);
             this.m_btnDoor13b.TabIndex = 2;
@@ -79,11 +81,33 @@
             this.m_edtResult.TabIndex = 3;
             this.m_edtResult.WordWrap = false;
             // 
+            // m_btnDoor15a
+            // 
+            this.m_btnDoor15a.Location = new System.Drawing.Point(281, 115);
+            this.m_btnDoor15a.Name = "m_btnDoor15a";
+            this.m_btnDoor15a.Size = new System.Drawing.Size(75, 23);
+            this.m_btnDoor15a.TabIndex = 4;
+            this.m_btnDoor15a.Text = "Tür 15/a";
+            this.m_btnDoor15a.UseVisualStyleBackColor = true;
+            this.m_btnDoor15a.Click += new System.EventHandler(this.m_btnDoor15a_Click);
+            // 
+            // m_btnDoor15b
+            // 
+            this.m_btnDoor15b.Location = new System.Drawing.Point(362, 115);
+            this.m_btnDoor15b.Name = "m_btnDoor15b";
+            this.m_btnDoor15b.Size = new System.Drawing.Size(75, 23);
+            this.m_btnDoor15b.TabIndex = 5;
+            this.m_btnDoor15b.Text = "Tür 15/b";
+            this.m_btnDoor15b.UseVisualStyleBackColor = true;
+            this.m_btnDoor15b.Click += new System.EventHandler(this.m_btnDoor15b_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
+            this.Controls.Add(this.m_btnDoor15b);
+            this.Controls.Add(this.m_btnDoor15a);
             this.Controls.Add(this.m_edtResult);
             this.Controls.Add(this.m_btnDoor13b);
             this.Controls.Add(this.m_btnDoor13a);
@@ -101,6 +125,8 @@
         private System.Windows.Forms.Button m_btnDoor13a;
         private System.Windows.Forms.Button m_btnDoor13b;
         private System.Windows.Forms.TextBox m_edtResult;
+        private System.Windows.Forms.Button m_btnDoor15a;
+        private System.Windows.Forms.Button m_btnDoor15b;
     }
 }
 
