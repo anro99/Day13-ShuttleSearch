@@ -42,6 +42,8 @@
             this.m_btnDoor19a = new System.Windows.Forms.Button();
             this.m_btnDoor20b = new System.Windows.Forms.Button();
             this.m_btnDoor20a = new System.Windows.Forms.Button();
+            this.m_btnDoor23b = new System.Windows.Forms.Button();
+            this.m_btnDoor23a = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // m_edtInput
@@ -189,11 +191,33 @@
             this.m_btnDoor20a.UseVisualStyleBackColor = true;
             this.m_btnDoor20a.Click += new System.EventHandler(this.m_btnDoor20a_Click);
             // 
+            // m_btnDoor23b
+            // 
+            this.m_btnDoor23b.Location = new System.Drawing.Point(362, 173);
+            this.m_btnDoor23b.Name = "m_btnDoor23b";
+            this.m_btnDoor23b.Size = new System.Drawing.Size(75, 23);
+            this.m_btnDoor23b.TabIndex = 15;
+            this.m_btnDoor23b.Text = "Tür 23/b";
+            this.m_btnDoor23b.UseVisualStyleBackColor = true;
+            this.m_btnDoor23b.Click += new System.EventHandler(this.m_btnDoor23b_Click);
+            // 
+            // m_btnDoor23a
+            // 
+            this.m_btnDoor23a.Location = new System.Drawing.Point(281, 173);
+            this.m_btnDoor23a.Name = "m_btnDoor23a";
+            this.m_btnDoor23a.Size = new System.Drawing.Size(75, 23);
+            this.m_btnDoor23a.TabIndex = 14;
+            this.m_btnDoor23a.Text = "Tür 23/a";
+            this.m_btnDoor23a.UseVisualStyleBackColor = true;
+            this.m_btnDoor23a.Click += new System.EventHandler(this.m_btnDoor23a_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
+            this.Controls.Add(this.m_btnDoor23b);
+            this.Controls.Add(this.m_btnDoor23a);
             this.Controls.Add(this.m_btnDoor20b);
             this.Controls.Add(this.m_btnDoor20a);
             this.Controls.Add(this.m_btnDoor19b);
@@ -231,6 +255,8 @@
         private System.Windows.Forms.Button m_btnDoor19a;
         private System.Windows.Forms.Button m_btnDoor20b;
         private System.Windows.Forms.Button m_btnDoor20a;
+        private System.Windows.Forms.Button m_btnDoor23b;
+        private System.Windows.Forms.Button m_btnDoor23a;
     }
 }
 
