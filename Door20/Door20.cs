@@ -37,6 +37,17 @@ namespace Day13_ShuttleSearch.Door20
                 return;
             }
 
+            if (!m_picture.CreateImage())
+            {
+                MessageBox.Show("Can't create image");
+            }
+
+            if (!m_picture.MarkMonster())
+            {
+                MessageBox.Show("No monsters found");
+            }
+
+            Result.Text = $"Roughness = {m_picture.Roughness()}";
         }
 
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Text;
 
 namespace Day13_ShuttleSearch.Door20
@@ -13,7 +12,7 @@ namespace Day13_ShuttleSearch.Door20
             SwapHorizontal
         };
 
-        private static List<Modifications> m_modifications = new List<Modifications> {
+        public static List<Modifications> ModificationList = new List<Modifications> {
         Modifications.RotateLeft,
         Modifications.RotateLeft,
         Modifications.RotateLeft,
@@ -55,7 +54,7 @@ namespace Day13_ShuttleSearch.Door20
 
         internal bool CheckFit()
         {
-            for (int orientationChanges = 0; orientationChanges < m_modifications.Count; orientationChanges++)
+            for (int orientationChanges = 0; orientationChanges < ModificationList.Count; orientationChanges++)
             {
                 if (CheckIfMatchToNeighbours())
                 {
@@ -171,7 +170,7 @@ namespace Day13_ShuttleSearch.Door20
         {
             var border = new byte[Tile.Size];
             for (int x = 0; x < Tile.Size; x++)
-                border[x] = m_grid[0,x];
+                border[x] = m_grid[x,0];
             return border;
         }
 
@@ -179,7 +178,7 @@ namespace Day13_ShuttleSearch.Door20
         {
             var border = new byte[Tile.Size];
             for (int x = 0; x < Tile.Size; x++)
-                border[x] = m_grid[Tile.Size - 1,x];
+                border[x] = m_grid[x,Tile.Size - 1];
             return border;
         }
 
@@ -187,7 +186,7 @@ namespace Day13_ShuttleSearch.Door20
         {
             var border = new byte[Tile.Size];
             for (int y = 0; y < Tile.Size; y++)
-                border[y] = m_grid[y,0];
+                border[y] = m_grid[0,y];
             return border;
         }
 
@@ -195,14 +194,14 @@ namespace Day13_ShuttleSearch.Door20
         {
             var border = new byte[Tile.Size];
             for (int y = 0; y < Tile.Size; y++)
-                border[y] = m_grid[y, Tile.Size - 1];
+                border[y] = m_grid[Tile.Size - 1,y];
             return border;
         }
 
 
         private bool ChangeOrientationToNextOne()
         {
-            switch(m_modifications[m_nextModificationIdx])
+            switch(ModificationList[m_nextModificationIdx])
             {
                 case Modifications.RotateLeft:
                     RotateLeft();
@@ -212,7 +211,7 @@ namespace Day13_ShuttleSearch.Door20
                     break;
             }
             m_nextModificationIdx += 1;
-            if (m_nextModificationIdx >= m_modifications.Count)
+            if (m_nextModificationIdx >= ModificationList.Count)
             {
                 m_nextModificationIdx = 0;
                 return false;
@@ -222,34 +221,24 @@ namespace Day13_ShuttleSearch.Door20
 
         private void RotateLeft()
         {
-            byte[,] newMatrix = new byte[Size, Size];
-            int newColumn, newRow = 0;
-            for (int oldColumn = Size - 1; oldColumn >= 0; oldColumn--)
-            {
-                newColumn = 0;
-                for (int oldRow = 0; oldRow < Size; oldRow++)
-                {
-                    newMatrix[newRow, newColumn] = m_grid[oldRow, oldColumn];
-                    newColumn++;
-                }
-                newRow++;
-            }
-            m_grid = newMatrix;
+            m_grid = Matrix.RotateLeft(m_grid);
         }
 
         private void SwapHorizontal()
         {
-            byte[,] newMatrix = new byte[Size, Size];
-            for (int y = 0; y < Size; y++)
-            {
-                for (int x = 0; x < Size; x++)
-                {
-                    newMatrix[y,x] = m_grid[y, Size - x - 1];
-                }
-            }
-            m_grid = newMatrix;
+            m_grid = Matrix.SwapHorizontal(m_grid);
         }
 
+        internal void CopyToImageWithoutBorder(byte[,] m_image, (int X, int Y) insertCoordinate)
+        {
+            for (int y = 1; y < Size - 1; y++)
+            {
+                for (int x = 1; x < Size - 1; x++)
+                {
+                    m_image[x + insertCoordinate.X - 1, y + insertCoordinate.Y - 1] = m_grid[x, y];
+                }
+            }
+        }
 
         public static bool TryParse(List<string> a_lines, out Tile a_tile)
         {
@@ -274,7 +263,7 @@ namespace Day13_ShuttleSearch.Door20
                 foreach(var chr in a_lines[y+1].ToCharArray())
                 {
                     if (chr == '#')
-                        a_tile.m_grid[y,x] = 1;
+                        a_tile.m_grid[x,y] = 1;
                     x++;
                 }
             }
