@@ -6,29 +6,47 @@ namespace Day13_ShuttleSearch.Door23
 {
     internal class Ring
     {
-        private List<Cup> m_cups = new List<Cup>();
+        private Dictionary<int, Cup> m_cups = new Dictionary<int, Cup>();
+        private int m_maxNummer = 0;
 
-        public static Ring Create( string a_line)
+        public static Ring Create(string a_line, int a_fillUpTo)
         {
             var ring = new Ring();
-
+            int maxNummer = 0;
+            var cups = new List<Cup>();
             foreach(var strNum in a_line.ToCharArray())
             {
                 if (!int.TryParse($"{strNum}", out var nummer))
                     return null;
+                if (nummer > maxNummer)
+                    maxNummer = nummer;
 
-                ring.m_cups.Add(new Cup(nummer));
+                var newCup = new Cup(nummer);
+                cups.Add(newCup);
+                ring.m_cups.Add(nummer, newCup);
             }
 
-            for(int i = 0; i < ring.m_cups.Count; i++)
+            for (int additional = maxNummer + 1; additional <= a_fillUpTo; additional++)
             {
-                if (i != ring.m_cups.Count - 1)
-                    ring.m_cups[i].Next = ring.m_cups[i + 1];
-                else
-                    ring.m_cups[i].Next = ring.m_cups[0];
+                var newCup = new Cup(additional);
+                cups.Add(newCup);
+                ring.m_cups.Add(additional, newCup);
             }
 
-            ring.CurrentCup = ring.m_cups[0];
+            if (a_fillUpTo > maxNummer)
+                ring.m_maxNummer = a_fillUpTo;
+            else
+                ring.m_maxNummer = maxNummer;
+
+            for(int i = 0; i < cups.Count; i++)
+            {
+                if (i != cups.Count - 1)
+                    cups[i].Next = cups[i + 1];
+                else
+                    cups[i].Next = cups[0];
+            }
+
+            ring.CurrentCup = cups[0];
             return ring;
         }
 
@@ -38,10 +56,17 @@ namespace Day13_ShuttleSearch.Door23
             var actCup = CurrentCup;
             while(actCup.Next != CurrentCup)
             {
-                sb.Append($"{actCup.Number}");
+                sb.Append($"{actCup.Number} ");
                 actCup = actCup.Next;
             }
             return sb.ToString();
+        }
+
+        internal long MultiplayFollowersOfOne()
+        {
+            var cupOne = m_cups[1];
+            long result = cupOne.Next.Number;
+            return result * cupOne.Next.Next.Number;
         }
 
         public string ResultString()
@@ -87,27 +112,29 @@ namespace Day13_ShuttleSearch.Door23
             return firstCup;
         }
 
-        public Cup FindNextLowerOrGreatest(int a_cupNumber)
+        public Cup FindNextLowerOrGreatest(int a_cupNumber, Cup a_removedCups)
         {
-            var greatest = CurrentCup;
-            Cup greatestLower = null;
-            var actual = CurrentCup.Next;
-            while(actual != CurrentCup)
+            Dictionary<int, Cup> removed = new Dictionary<int, Cup>();
+            while(a_removedCups != null)
             {
-                if (actual.Number > greatest.Number)
-                    greatest = actual;
-                if (actual.Number < a_cupNumber)
-                {
-                    if ( greatestLower == null || actual.Number > greatestLower.Number)
-                        greatestLower = actual;
-                }
-                actual = actual.Next;
+                removed.Add(a_removedCups.Number, a_removedCups);
+                a_removedCups = a_removedCups.Next;
             }
 
-            if (greatestLower != null)
-                return greatestLower;
+            int nextLower = a_cupNumber - 1;
+            while (nextLower >= 1 && removed.ContainsKey(nextLower))
+                nextLower = nextLower - 1;
 
-            return greatest;
+            if (nextLower != 0)
+                return m_cups[nextLower];
+
+            int greatest = m_maxNummer;
+            while (greatest >= 1 && removed.ContainsKey(greatest))
+                greatest = greatest - 1;
+
+            if (greatest != 0)
+                return m_cups[greatest];
+            return null;
         }
 
         public void InsertCups(Cup a_insertAfter, Cup a_cupsToInsert)
@@ -123,6 +150,23 @@ namespace Day13_ShuttleSearch.Door23
         public void StepToNext()
         {
             CurrentCup = CurrentCup.Next;
+        }
+
+
+        public void DoTheCrab(int a_turns, Action<string> a_trace)
+        {
+            string turnResult;
+            for (var turns = 0; turns < a_turns; turns++)
+            {
+                var pickupCups = RemoveCups(3);
+                InsertCups(FindNextLowerOrGreatest(CurrentCup.Number, pickupCups), pickupCups);
+                StepToNext();
+                if (a_trace != null)
+                {
+                    turnResult = RepresentationAsString();
+                    a_trace(turnResult);
+                }
+            }
         }
     }
 }

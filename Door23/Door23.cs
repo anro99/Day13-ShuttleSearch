@@ -16,40 +16,43 @@ namespace Day13_ShuttleSearch.Door23
 
         internal void Question1()
         {
-            if (!TryParseInput())
+            if (!TryParseInput(0))
             {
                 MessageBox.Show("Can't parse");
                 return;
             }
 
-            string turnResult;
-            for( var turns = 0; turns < 100; turns++)
-            {
-                var pickupCups = m_ring.RemoveCups(3);
-                m_ring.InsertCups(m_ring.FindNextLowerOrGreatest(m_ring.CurrentCup.Number), pickupCups);
-                m_ring.StepToNext();
-                turnResult = m_ring.RepresentationAsString();
-            }
-            Result.Text = m_ring.ResultString();
+            m_ring.DoTheCrab(100, (a_trace)=>
+                                {
+                                    Result.Text += Environment.NewLine;
+                                    Result.Text += a_trace;
+                                    Result.Update();
+                                }
+                );
+            Result.Text += Environment.NewLine;
+            Result.Text += m_ring.ResultString();
         }
 
         internal void Question2()
         {
-            if (!TryParseInput())
+            if (!TryParseInput(1000000))
             {
                 MessageBox.Show("Can't parse");
                 return;
             }
 
+            m_ring.DoTheCrab(10000000, null );
+            Result.Text += Environment.NewLine;
+            Result.Text += m_ring.MultiplayFollowersOfOne();
         }
 
 
-        private bool TryParseInput()
+        private bool TryParseInput(int a_fillUpTo)
         {
             var lines = Input.Text.Split(Environment.NewLine);
             int y = 0;
 
-            m_ring = Ring.Create(lines[0]);
+            m_ring = Ring.Create(lines[0], a_fillUpTo);
             return m_ring != null;
         }
 
